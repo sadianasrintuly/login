@@ -1,24 +1,23 @@
-
 import 'dart:convert';
 
-LoginScreen loginScreenFromJson(String str) => LoginScreen.fromJson(json.decode(str));
+LoginModel loginModelFromJson(String str) => LoginModel.fromJson(json.decode(str));
 
-String loginScreenToJson(LoginScreen data) => json.encode(data.toJson());
+String loginModelToJson(LoginModel data) => json.encode(data.toJson());
 
-class LoginScreen {
+class LoginModel {
   String id;
   String name;
   String password;
   DateTime createdAt;
 
-  LoginScreen({
+  LoginModel({
     required this.id,
     required this.name,
     required this.password,
     required this.createdAt,
   });
 
-  factory LoginScreen.fromJson(Map<String, dynamic> json) => LoginScreen(
+  factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
     id: json["id"],
     name: json["name"],
     password: json["password"],

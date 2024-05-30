@@ -6,7 +6,6 @@ import 'homepage.dart';
 import 'model_login.dart';
 
 class LoginScreen extends StatefulWidget {
-
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -16,74 +15,74 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  late LoginScreen loginScreen;
-  insertApi() async {
+  late LoginModel loginModel;
 
+  registrationApi() async {
     print("call");
     final response = await http.post(
       Uri.parse("http://${API_Class().api}/Login/login.php"),
       body: jsonEncode(<String, dynamic>{
         "name": nameController.text,
-
       }),
     );
 
-    loginScreen = loginScreenFromJson(response.body) as LoginScreen;
+    loginModel = loginModelFromJson(response.body);
 
-    print(loginScreen.password==passwordController.text);
+    print(loginModel.password == passwordController.text);
 
-    if (loginScreen.password==passwordController.text){
+    if (loginModel.password == passwordController.text) {
       Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) =>  Homepage(loginScreen: loginScreen,))
+        context,
+        MaterialPageRoute(
+          builder: (context) => Homepage(loginModel: loginModel),
+        ),
       );
-
     }
-
     print(response.body);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-          children: [
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [
-                      Color(0xff1A94B8),
-                      Color(0xff1AA4B8),
-                      Color(0xff1A8CB8),
-                    ]
-                ),
+      body: Stack(
+        children: [
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xff1A94B8),
+                  Color(0xff1AA4B8),
+                  Color(0xff1A8CB8),
+                ],
               ),
-              child: const Padding(
-                padding: EdgeInsets.only(top: 60.0, left: 22),
-                child: Text(
-                  'Login Here....',
-                  style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold
-                  ),
+            ),
+            child: const Padding(
+              padding: EdgeInsets.only(top: 60.0, left: 22),
+              child: Text(
+                'Login Here....',
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 200.0),
-              child: Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40)
-                  ),
-                  color: Colors.white,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 200.0),
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
                 ),
-                height: double.infinity,
-                width: double.infinity,
+                color: Colors.white,
+              ),
+              height: double.infinity,
+              width: double.infinity,
+              child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 18.0, right: 18),
                   child: Column(
@@ -92,29 +91,41 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextField(
                         controller: nameController,
                         decoration: InputDecoration(
-                            suffixIcon: Icon(Icons.check, color: Colors.grey,),
-                            prefixIcon: Icon(Icons.email_outlined, color: Colors.grey,),
-                            label: Text(
-                              'Name',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color:  Color(0xff1A94B8),
-                              ),
-                            )
+                          suffixIcon: Icon(
+                            Icons.check,
+                            color: Colors.grey,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.email_outlined,
+                            color: Colors.grey,
+                          ),
+                          label: Text(
+                            'Name',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff1A94B8),
+                            ),
+                          ),
                         ),
                       ),
                       TextField(
                         controller: passwordController,
                         decoration: InputDecoration(
-                            suffixIcon: Icon(Icons.visibility_off, color: Colors.grey,),
-                            prefixIcon: Icon(Icons.lock, color: Colors.grey,),
-                            label: Text(
-                              'Password',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color:  Color(0xff1A94B8),
-                              ),
-                            )
+                          suffixIcon: Icon(
+                            Icons.visibility_off,
+                            color: Colors.grey,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Colors.grey,
+                          ),
+                          label: Text(
+                            'Password',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff1A94B8),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20,),
@@ -131,30 +142,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 70,),
                       GestureDetector(
-                        onTap: (){
-                          insertApi();
+                        onTap: () {
+                          registrationApi();
                         },
                         child: Container(
                           height: 55,
-                          width: 280,
+                          width: 300,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
-                            gradient: const LinearGradient(
+                            gradient:  LinearGradient(
                                 colors: [
                                   Color(0xff1A94B8),
+                                  Color(0xff1A8CB8),
                                 ]
                             ),
                           ),
-                          child: const Center(
-                            child: Text(
-                              'Login',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.white
-                              ),
-                            ),
-                          ),
+                          child:  Center(child: Text('Login',style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.white
+                          ),),),
                         ),
                       ),
                       const SizedBox(height: 100,),
@@ -163,8 +170,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-          ],
-        )
+          ),
+        ],
+      ),
     );
   }
 }

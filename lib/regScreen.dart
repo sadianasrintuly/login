@@ -1,30 +1,36 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'api.dart';
 import 'loginScreen.dart';
 
-class RegScreen extends StatelessWidget {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+class RegScreen extends StatefulWidget {
+  const RegScreen({Key? key}) : super(key: key);
 
-  RegScreen({Key? key}) : super(key: key);
+  @override
+  State<RegScreen> createState() => _RegScreenState();
+}
 
-  Future<void> insertApi() async {
-    try {
-      final response = await http.post(
-        Uri.parse("http://${API_Class().api}/Login/reg.php"),
-        body: jsonEncode(<String, dynamic>{
-          "name": nameController.text,
-          "password": passwordController.text,
-        }),
-      );
+class _RegScreenState extends State<RegScreen> {
+  TextEditingController name = TextEditingController();
+  TextEditingController password = TextEditingController();
 
-      print(response.body);
-    } catch (e) {
-      print("Error: $e");
-    }
+  registrationApi() async {
+    final response = await http.post(
+      Uri.parse("http://${API_Class().api}/Login/reg.php"),
+      body: jsonEncode(<String, dynamic>{
+        "name": name.text,
+        "password": password.text,
+      }),
+    );
+    print(response.body);
+    print(response.statusCode);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+
   }
 
   @override
@@ -55,7 +61,7 @@ class RegScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 220.0),
+            padding: EdgeInsets.only(top: 250.0),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -66,76 +72,69 @@ class RegScreen extends StatelessWidget {
               ),
               height: double.infinity,
               width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 18.0, right: 18),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextField(
-                      controller: nameController,
-                      decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.check, color: Colors.grey),
-                        prefixIcon: Icon(Icons.supervisor_account_rounded, color: Colors.grey),
-                        labelText: 'Full Name',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color:  Color(0xff1A94B8),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 18.0, right: 18),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextField(
+                        controller: name,
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.check, color: Colors.grey),
+                          prefixIcon: Icon(Icons.supervisor_account_rounded, color: Colors.grey),
+                          labelText: 'Full Name',
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff1A94B8),
+                          ),
                         ),
                       ),
-                    ),
-                    TextField(
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.visibility_off, color: Colors.grey),
-                        prefixIcon: Icon(Icons.lock_outline, color: Colors.grey),
-                        labelText: 'Password',
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color:  Color(0xff1A94B8),
+                      TextField(
+                        controller: password,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.visibility_off, color: Colors.grey),
+                          prefixIcon: Icon(Icons.lock_outline, color: Colors.grey),
+                          labelText: 'Password',
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff1A94B8),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-
-                        insertApi();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
-                      },
-                      child: Container(
-                        height: 55,
-                        width: 250,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          gradient: LinearGradient(colors: [
-                            Color(0xff1A94B8),
-                          ]),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Login',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.white,
+                      SizedBox(height: 100,),
+                      GestureDetector(
+                        onTap: () {
+                          registrationApi();
+                        },
+                        child: Container(
+                          height: 55,
+                          width: 250,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            gradient: LinearGradient(
+                                colors: [
+                                  Color(0xff1A94B8),
+                                  Color(0xff1A8CB8),
+                                ]
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'SIGN IN',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                  ],
+                      SizedBox(height: 100),
+                    ],
+                  ),
                 ),
               ),
             ),
